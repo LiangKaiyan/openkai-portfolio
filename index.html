@@ -1,0 +1,597 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OpenKAI — AI Film & Visual Studio</title>
+<meta name="description" content="OpenKAI creates cinematic AI video: AI short dramas, live-action style shorts, commercial ads and motion design. Portfolio and showreel." />
+<meta property="og:title" content="OpenKAI — AI Film & Visual Studio" />
+<meta property="og:description" content="Cinematic AI video: short dramas, live-action shorts, commercial ads and motion design." />
+<meta property="og:image" content="posters/showreel.jpg" />
+<meta name="theme-color" content="#0B0C0D" />
+<link rel="icon" href="favicon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #0B0C0D;
+    --ink-2: #131416;
+    --ink-3: #1B1D20;
+    --line: rgba(243, 241, 233, .10);
+    --line-2: rgba(243, 241, 233, .18);
+    --paper: #F3F1E9;
+    --muted: rgba(243, 241, 233, .62);
+    --accent: #E3E84A;
+    --accent-dim: rgba(227, 232, 74, .14);
+    --radius: 14px;
+    --gutter: clamp(16px, 4vw, 56px);
+    --max: 1320px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--ink); color: var(--paper);
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+    font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  a { color: inherit; text-decoration: none; }
+  img, video { display: block; max-width: 100%; }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+  .display { font-family: "Archivo", "Inter", sans-serif; font-weight: 900; letter-spacing: -.02em; line-height: 1.02; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-size: 12px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--accent);
+  }
+  .eyebrow::before { content: ""; width: 28px; height: 2px; background: var(--accent); }
+
+  /* ---------- nav ---------- */
+  .nav {
+    position: fixed; inset: 0 0 auto 0; z-index: 50;
+    transition: background .3s, border-color .3s, backdrop-filter .3s;
+    border-bottom: 1px solid transparent;
+  }
+  .nav.scrolled { background: rgba(11, 12, 13, .82); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-color: var(--line); }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 72px; }
+  .nav-logo img { height: 26px; width: auto; }
+  .nav-links { display: flex; align-items: center; gap: 32px; font-size: 14px; font-weight: 500; }
+  .nav-links a:not(.btn) { color: var(--muted); transition: color .2s; }
+  .nav-links a:not(.btn):hover { color: var(--paper); }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    height: 46px; padding: 0 22px; border-radius: 999px;
+    font-size: 14px; font-weight: 600; letter-spacing: .01em; white-space: nowrap;
+    transition: transform .2s, background .2s, color .2s, border-color .2s;
+  }
+  .btn:active { transform: scale(.97); }
+  .btn-accent { background: var(--accent); color: var(--ink); }
+  .btn-accent:hover { background: #EEF27A; }
+  .btn-ghost { border: 1px solid var(--line-2); background: rgba(11,12,13,.35); backdrop-filter: blur(8px); }
+  .btn-ghost:hover { border-color: var(--paper); }
+  .btn-sm { height: 38px; padding: 0 18px; font-size: 13px; }
+  .play-ico { width: 0; height: 0; border-left: 9px solid currentColor; border-top: 6px solid transparent; border-bottom: 6px solid transparent; }
+
+  /* ---------- hero ---------- */
+  .hero { position: relative; overflow: hidden; padding: clamp(120px, 16vh, 168px) 0 clamp(56px, 8vw, 96px); }
+  .hero::before {
+    content: ""; position: absolute; left: 50%; top: 38%; width: 1400px; height: 900px; transform: translateX(-50%);
+    background: radial-gradient(ellipse at center, rgba(227,232,74,.13), rgba(227,232,74,0) 60%); pointer-events: none;
+  }
+  .hero-content { position: relative; z-index: 2; display: grid; grid-template-columns: 1.25fr 1fr; gap: 24px 56px; align-items: end; }
+  .hero h1 { font-size: clamp(42px, 6.6vw, 96px); margin-top: 20px; }
+  .hero h1 em { font-style: normal; color: var(--accent); }
+  .hero p { font-size: clamp(16px, 1.3vw, 18px); color: rgba(243,241,233,.78); }
+  .hero-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+  .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+  .reel {
+    position: relative; z-index: 2; margin-top: clamp(40px, 6vw, 72px); aspect-ratio: 16 / 9; border-radius: 20px; overflow: hidden;
+    background: #000; cursor: pointer; box-shadow: 0 40px 120px rgba(0,0,0,.55), 0 0 0 1px var(--line);
+  }
+  .hero-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .reel-btn {
+    position: absolute; right: 20px; bottom: 20px; z-index: 2;
+    display: inline-flex; align-items: center; gap: 10px; height: 44px; padding: 0 18px 0 16px; border-radius: 999px;
+    background: rgba(11,12,13,.7); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--line-2); font-size: 13px; font-weight: 600; transition: all .2s;
+  }
+  .reel-btn .dot { width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: var(--ink); display: grid; place-items: center; }
+  .reel-btn .dot .play-ico { margin-left: 2px; border-left-width: 7px; border-top-width: 4.5px; border-bottom-width: 4.5px; }
+  .reel:hover .reel-btn { border-color: var(--accent); }
+  .reel-label {
+    position: absolute; left: 20px; top: 18px; z-index: 2; font-size: 11px; font-weight: 600; letter-spacing: .24em;
+    text-transform: uppercase; color: rgba(243,241,233,.85); display: flex; align-items: center; gap: 8px;
+  }
+  .reel-label::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px rgba(227,232,74,.2); }
+  .tag {
+    font-size: 12px; font-weight: 600; padding: 7px 14px; border-radius: 999px;
+    border: 1px solid var(--line-2); color: rgba(243,241,233,.85); background: rgba(11,12,13,.4);
+  }
+  .tag:nth-child(odd) { border-color: rgba(227,232,74,.6); }
+  .scroll-hint {
+    position: absolute; right: var(--gutter); bottom: clamp(48px, 9vh, 96px); z-index: 2;
+    font-size: 11px; letter-spacing: .3em; text-transform: uppercase; color: var(--muted);
+    writing-mode: vertical-rl; display: flex; align-items: center; gap: 14px;
+  }
+  .scroll-hint::after { content: ""; width: 1px; height: 56px; background: linear-gradient(var(--accent), transparent); }
+
+  /* ---------- stats ---------- */
+  .stats { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .stats .wrap { display: grid; grid-template-columns: repeat(4, 1fr); }
+  .stat { padding: 30px 0; }
+  .stat + .stat { padding-left: 28px; border-left: 1px solid var(--line); }
+  .stat b { display: block; font-family: "Archivo", sans-serif; font-weight: 800; font-size: clamp(26px, 3vw, 38px); line-height: 1.1; }
+  .stat b span { color: var(--accent); }
+  .stat small { font-size: 13px; color: var(--muted); }
+
+  /* ---------- sections ---------- */
+  section.block { padding: clamp(72px, 11vw, 140px) 0; }
+  .sec-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 44px; }
+  .sec-head h2 { font-size: clamp(36px, 5.4vw, 72px); margin-top: 16px; }
+  .sec-head p { max-width: 420px; color: var(--muted); }
+
+  /* ---------- work ---------- */
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; }
+  .filter {
+    height: 40px; padding: 0 18px; border-radius: 999px; border: 1px solid var(--line-2);
+    font-size: 14px; font-weight: 500; color: var(--muted); transition: all .2s;
+  }
+  .filter:hover { color: var(--paper); border-color: var(--paper); }
+  .filter.active { background: var(--accent); border-color: var(--accent); color: var(--ink); font-weight: 600; }
+  .filter .n { opacity: .55; margin-left: 6px; font-size: 12px; }
+
+  .cat-group { margin-bottom: 64px; }
+  .cat-group:last-child { margin-bottom: 0; }
+  .cat-title { display: flex; align-items: baseline; gap: 16px; margin-bottom: 22px; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
+  .cat-title .idx { font-family: "Archivo", sans-serif; font-weight: 800; color: var(--accent); font-size: 15px; }
+  .cat-title h3 { font-family: "Archivo", sans-serif; font-weight: 800; font-size: clamp(22px, 2.4vw, 30px); letter-spacing: -.01em; }
+  .cat-title p { margin-left: auto; color: var(--muted); font-size: 14px; max-width: 460px; text-align: right; }
+
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .card { cursor: pointer; }
+  .thumb {
+    position: relative; aspect-ratio: 16 / 9; border-radius: var(--radius); overflow: hidden;
+    background: var(--ink-3); isolation: isolate;
+  }
+  .thumb .bg { position: absolute; inset: -20px; background-size: cover; background-position: center; filter: blur(22px) brightness(.45); z-index: -1; }
+  .thumb img, .thumb video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.2,.7,.2,1), opacity .3s; }
+  .thumb.portrait img, .thumb.portrait video { object-fit: contain; }
+  .thumb video { opacity: 0; }
+  .card:hover .thumb video.ready { opacity: 1; }
+  .card:hover .thumb img, .card:hover .thumb video { transform: scale(1.035); }
+  .thumb::after {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+    box-shadow: inset 0 0 0 1px var(--line); transition: box-shadow .3s;
+  }
+  .card:hover .thumb::after { box-shadow: inset 0 0 0 2px var(--accent); }
+  .badge {
+    position: absolute; z-index: 2; bottom: 12px; right: 12px; font-size: 12px; font-weight: 600;
+    padding: 3px 9px; border-radius: 6px; background: rgba(11,12,13,.75); backdrop-filter: blur(6px);
+  }
+  .badge.fmt { right: auto; left: 12px; color: var(--accent); }
+  .play {
+    position: absolute; z-index: 2; left: 50%; top: 50%; width: 58px; height: 58px; margin: -29px 0 0 -29px;
+    border-radius: 50%; background: var(--accent); color: var(--ink); display: grid; place-items: center;
+    opacity: 0; transform: scale(.8); transition: all .3s cubic-bezier(.2,.7,.2,1);
+  }
+  .play .play-ico { margin-left: 3px; border-left-width: 13px; border-top-width: 8px; border-bottom-width: 8px; }
+  .card:hover .play { opacity: 1; transform: scale(1); }
+  .card-meta { padding: 14px 2px 0; }
+  .card-meta h4 { font-size: 17px; font-weight: 600; line-height: 1.35; }
+  .card-meta p { font-size: 14px; color: var(--muted); margin-top: 4px; line-height: 1.5; }
+  .card.hide { display: none; }
+
+  /* ---------- services ---------- */
+  .services { background: var(--ink-2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .svc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .svc { background: var(--ink-2); padding: 32px 28px 36px; transition: background .3s; }
+  .svc:hover { background: var(--ink-3); }
+  .svc .num { font-family: "Archivo", sans-serif; font-weight: 800; color: var(--accent); font-size: 14px; }
+  .svc h3 { font-family: "Archivo", sans-serif; font-weight: 800; font-size: 22px; margin: 44px 0 12px; letter-spacing: -.01em; }
+  .svc p { font-size: 14.5px; color: var(--muted); }
+  .svc ul { list-style: none; margin-top: 20px; display: grid; gap: 8px; font-size: 13.5px; }
+  .svc li { display: flex; gap: 10px; align-items: baseline; }
+  .svc li::before { content: ""; flex: none; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); transform: translateY(-2px); }
+
+  /* ---------- process ---------- */
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; counter-reset: s; }
+  .step { position: relative; padding-top: 28px; border-top: 2px solid var(--line-2); }
+  .step::before {
+    content: ""; position: absolute; top: -2px; left: 0; width: 48px; height: 2px; background: var(--accent);
+  }
+  .step b { display: block; font-size: 13px; font-weight: 600; color: var(--accent); letter-spacing: .14em; text-transform: uppercase; }
+  .step h3 { font-family: "Archivo", sans-serif; font-weight: 800; font-size: 21px; margin: 10px 0 8px; }
+  .step p { font-size: 14.5px; color: var(--muted); }
+
+  /* ---------- cta ---------- */
+  .cta { padding: clamp(72px, 10vw, 120px) 0; }
+  .cta-box {
+    position: relative; overflow: hidden; border-radius: 24px; padding: clamp(40px, 7vw, 88px);
+    background: radial-gradient(ellipse at 85% 0%, rgba(227,232,74,.22), rgba(227,232,74,0) 55%), var(--ink-3);
+    border: 1px solid var(--line);
+  }
+  .cta-box h2 { font-size: clamp(34px, 5.6vw, 76px); max-width: 14ch; margin: 18px 0 18px; }
+  .cta-box h2 em { font-style: normal; color: var(--accent); }
+  .cta-box p { max-width: 520px; color: var(--muted); font-size: 17px; }
+  .cta-box .hero-ctas { margin-top: 34px; }
+
+  footer { border-top: 1px solid var(--line); padding: 32px 0 40px; }
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; font-size: 13px; color: var(--muted); }
+  footer img { height: 20px; width: auto; opacity: .9; }
+
+  /* ---------- lightbox ---------- */
+  .lb {
+    position: fixed; inset: 0; z-index: 100; display: none; align-items: center; justify-content: center;
+    background: rgba(5,5,6,.92); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding: 24px;
+  }
+  .lb.open { display: flex; animation: fade .25s ease; }
+  @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+  .lb-inner { width: min(1200px, 100%); display: flex; flex-direction: column; align-items: center; }
+  .lb video { max-width: 100%; max-height: calc(100svh - 150px); border-radius: 12px; background: #000; box-shadow: 0 30px 80px rgba(0,0,0,.6); }
+  .lb-cap { align-self: stretch; display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin-top: 16px; }
+  .lb-cap h4 { font-size: 18px; font-weight: 600; }
+  .lb-cap span { font-size: 13px; color: var(--accent); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
+  .lb-close {
+    position: absolute; top: 18px; right: 18px; width: 46px; height: 46px; border-radius: 50%;
+    border: 1px solid var(--line-2); display: grid; place-items: center; font-size: 22px; line-height: 1;
+  }
+  .lb-close:hover { border-color: var(--accent); color: var(--accent); }
+  .lb-nav { position: absolute; top: 50%; width: 46px; height: 46px; margin-top: -23px; border-radius: 50%; border: 1px solid var(--line-2); display: grid; place-items: center; font-size: 20px; }
+  .lb-nav:hover { border-color: var(--accent); color: var(--accent); }
+  .lb-prev { left: 18px; } .lb-next { right: 18px; }
+
+  /* ---------- reveal ---------- */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 1080px) {
+    .grid { grid-template-columns: repeat(2, 1fr); }
+    .svc-grid { grid-template-columns: repeat(2, 1fr); }
+    .steps { grid-template-columns: repeat(2, 1fr); row-gap: 36px; }
+  }
+  @media (max-width: 860px) {
+    .hero-content { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 760px) {
+    .nav-links a:not(.btn) { display: none; }
+    .reel { border-radius: 12px; }
+    .reel-btn { right: auto; left: 50%; top: 50%; bottom: auto; transform: translate(-50%, -50%); height: auto; padding: 0; border: 0; background: none; backdrop-filter: none; }
+    .reel-btn .txt { display: none; }
+    .reel-btn .dot { width: 54px; height: 54px; box-shadow: 0 6px 24px rgba(0,0,0,.45); }
+    .reel-btn .dot .play-ico { margin-left: 4px; border-left-width: 14px; border-top-width: 9px; border-bottom-width: 9px; }
+    .reel-label { left: 12px; top: 10px; }
+    .stats .wrap { grid-template-columns: repeat(2, 1fr); }
+    .stat:nth-child(3) { padding-left: 0; border-left: 0; }
+    .stat:nth-child(n+3) { border-top: 1px solid var(--line); }
+    .scroll-hint { display: none; }
+    .cat-title { flex-wrap: wrap; }
+    .cat-title p { margin-left: 0; text-align: left; flex-basis: 100%; }
+    .lb-nav { display: none; }
+  }
+  @media (max-width: 560px) {
+    .grid, .svc-grid, .steps { grid-template-columns: 1fr; }
+    .play { opacity: 1; transform: scale(.85); }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="wrap">
+    <a class="nav-logo" href="#top" aria-label="OpenKAI home"><img src="logo.png" alt="OpenKAI" /></a>
+    <div class="nav-links">
+      <a href="#work">Work</a>
+      <a href="#services">Services</a>
+      <a href="#process">Process</a>
+      <a class="btn btn-accent btn-sm" href="#contact">Start a Project</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div class="hero-content">
+      <div>
+        <span class="eyebrow">AI Film &amp; Visual Studio</span>
+        <h1 class="display">Cinematic video, made with <em>AI.</em></h1>
+      </div>
+      <div>
+        <p>I turn ideas, scripts and products into film-grade AI video — short dramas, live-action style shorts, commercials and motion design, delivered in horizontal or vertical formats.</p>
+        <div class="hero-ctas">
+          <button class="btn btn-accent" data-open="showreel"><span class="play-ico"></span>Watch with Sound</button>
+          <a class="btn btn-ghost" href="#work">Browse Work</a>
+        </div>
+      </div>
+    </div>
+    <div class="reel" data-open="showreel" role="button" tabindex="0" aria-label="Play showreel with sound">
+      <video class="hero-video" src="videos/showreel-hero.mp4" poster="posters/showreel.jpg" autoplay muted loop playsinline preload="auto"></video>
+      <span class="reel-label">Showreel 2026</span>
+      <span class="reel-btn"><span class="dot"><span class="play-ico"></span></span><span class="txt">Play with sound · 0:58</span></span>
+    </div>
+    <div class="hero-tags">
+      <span class="tag">AI Short Drama</span>
+      <span class="tag">Live-Action Shorts</span>
+      <span class="tag">Commercial Ads</span>
+      <span class="tag">Motion Design</span>
+    </div>
+  </div>
+</header>
+
+<div class="stats">
+  <div class="wrap">
+    <div class="stat"><b><span id="stat-n">17</span></b><small>Featured projects</small></div>
+    <div class="stat"><b>4</b><small>Core specialties</small></div>
+    <div class="stat"><b>16:9 <span>/</span> 9:16</b><small>Landscape &amp; vertical delivery</small></div>
+    <div class="stat"><b>15s<span>–</span>2.5min</b><small>Spots to multi-episode stories</small></div>
+  </div>
+</div>
+
+<section class="block" id="work">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <span class="eyebrow">Selected Work</span>
+        <h2 class="display">Portfolio</h2>
+      </div>
+      <p>Every piece below was produced end-to-end with AI — from concept and look development to edit, sound and final delivery. Hover to preview, click to watch with sound.</p>
+    </div>
+    <div class="filters reveal" id="filters"></div>
+    <div id="groups"></div>
+  </div>
+</section>
+
+<section class="block services" id="services">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <span class="eyebrow">What I Do</span>
+        <h2 class="display">Services</h2>
+      </div>
+      <p>Pick a specialty or mix them — each project is tailored to your story, brand and platform.</p>
+    </div>
+    <div class="svc-grid reveal">
+      <div class="svc">
+        <span class="num">01</span>
+        <h3>AI Short Drama</h3>
+        <p>Animated and stylized short dramas with consistent characters across scenes and episodes.</p>
+        <ul><li>Series &amp; episodic stories</li><li>Consistent character design</li><li>Voice, music &amp; subtitles</li></ul>
+      </div>
+      <div class="svc">
+        <span class="num">02</span>
+        <h3>Live-Action Shorts</h3>
+        <p>Photoreal, cinematic short films — romance, family, travel and historical drama.</p>
+        <ul><li>Film-look color &amp; lighting</li><li>Emotional storytelling</li><li>Narrative or mood pieces</li></ul>
+      </div>
+      <div class="svc">
+        <span class="num">03</span>
+        <h3>Commercial Ads</h3>
+        <p>Product and brand spots for social, e-commerce and campaigns that stop the scroll.</p>
+        <ul><li>Product &amp; food commercials</li><li>Fashion &amp; beauty</li><li>9:16 cuts for Reels / TikTok</li></ul>
+      </div>
+      <div class="svc">
+        <span class="num">04</span>
+        <h3>Motion Design</h3>
+        <p>Kinetic typography, collage animation and explainer videos that make ideas clear.</p>
+        <ul><li>Corporate &amp; product explainers</li><li>Founder &amp; brand stories</li><li>Stylized motion graphics</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="process">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <span class="eyebrow">How It Works</span>
+        <h2 class="display">Process</h2>
+      </div>
+      <p>A clear four-step workflow, with your feedback built in at every stage.</p>
+    </div>
+    <div class="steps reveal">
+      <div class="step"><b>Step 01</b><h3>Brief</h3><p>Share your idea, script, product or references. We agree on length, format, style and deadline.</p></div>
+      <div class="step"><b>Step 02</b><h3>Script &amp; Storyboard</h3><p>I develop the story beats, shot list and visual style so you can approve the direction first.</p></div>
+      <div class="step"><b>Step 03</b><h3>AI Production</h3><p>Characters, scenes and shots are generated and refined for consistency and cinematic quality.</p></div>
+      <div class="step"><b>Step 04</b><h3>Edit &amp; Delivery</h3><p>Editing, music, sound design and subtitles — delivered in HD, in the aspect ratios you need.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta" id="contact">
+  <div class="wrap">
+    <div class="cta-box reveal">
+      <span class="eyebrow">Let's Work Together</span>
+      <h2 class="display">Have a story to tell? Let's make it <em>move.</em></h2>
+      <p>Custom AI video production for brands, creators and storytellers. Send me your brief on Fiverr and I'll get back to you with ideas and a quote.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-accent" id="fiverr-btn" href="#contact" target="_blank" rel="noopener">Message me on Fiverr</a>
+        <button class="btn btn-ghost" data-open="showreel"><span class="play-ico"></span>Watch Showreel</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <img src="logo.png" alt="OpenKAI" />
+    <span>© <span id="yr">2026</span> OpenKAI · AI Film &amp; Visual Studio</span>
+  </div>
+</footer>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Video player">
+  <button class="lb-close" id="lb-close" aria-label="Close">×</button>
+  <button class="lb-nav lb-prev" id="lb-prev" aria-label="Previous">‹</button>
+  <button class="lb-nav lb-next" id="lb-next" aria-label="Next">›</button>
+  <div class="lb-inner">
+    <video id="lb-video" controls playsinline></video>
+    <div class="lb-cap"><h4 id="lb-title"></h4><span id="lb-cat"></span></div>
+  </div>
+</div>
+
+<script>
+  // Paste your Fiverr gig/profile URL here — the contact button links to it.
+  const FIVERR_URL = "";
+
+  const CATS = [
+    { id: "drama", name: "AI Short Drama", blurb: "Stylized animated stories with consistent characters, from single shorts to episodic series." },
+    { id: "live", name: "Live-Action Shorts", blurb: "Photoreal, film-look short stories — romance, family, travel and historical drama." },
+    { id: "ads", name: "Commercial Ads", blurb: "Product, food, fashion and beauty spots built for social and campaigns." },
+    { id: "motion", name: "Motion Design", blurb: "Kinetic type, collage animation and explainer videos for brands and companies." },
+  ];
+  const WORKS = [
+    { id: "sea-market-ep1", cat: "drama", title: "The Sea Market — Episode 1", desc: "Folklore-inspired animated drama with Chinese ink and opera-mask aesthetics.", portrait: false },
+    { id: "sea-market-ep2", cat: "drama", title: "The Sea Market — Episode 2", desc: "The journey continues: a glowing night market, calligraphy and an undersea pearl.", portrait: false },
+    { id: "tiger-and-fisherman", cat: "drama", title: "The Tiger & the Fisherman", desc: "A playful hand-drawn style short about a fisherman and a giant sea-swimming tiger.", portrait: false },
+
+    { id: "first-rain", cat: "live", title: "First Rain", desc: "A coming-of-age romance under one umbrella.", portrait: false },
+    { id: "a-new-friend", cat: "live", title: "A New Friend", desc: "A warm family moment — a boy, his mom and a fluffy new puppy.", portrait: false },
+    { id: "golden-hour", cat: "live", title: "Golden Hour", desc: "A dreamy travel diary of domes, fresh figs and a sunset boat ride.", portrait: false },
+    { id: "first-birthday", cat: "live", title: "First Birthday", desc: "A sunlit backyard birthday party, shot for vertical screens.", portrait: true },
+    { id: "the-boy-emperor", cat: "live", title: "The Boy Emperor", desc: "A historical drama scene — a young ruler's quiet defiance.", portrait: false },
+
+    { id: "perfume-pinball", cat: "ads", title: "Perfume — Pinball", desc: "A neon-lit fragrance spot with a playful pinball reveal (9:16).", portrait: true },
+    { id: "fashion-editorial", cat: "ads", title: "Fashion Editorial", desc: "Bold color blocking and kinetic type for a fashion campaign.", portrait: false },
+    { id: "fruit-soda", cat: "ads", title: "Fruit Soda", desc: "A fresh, flavor-by-flavor product commercial for a canned drink.", portrait: false },
+    { id: "wok-fried-rice", cat: "ads", title: "Wok Fried Rice", desc: "A food commercial where the ingredients become the typography.", portrait: false },
+
+    { id: "skate-collage", cat: "motion", title: "Skate Collage", desc: "Cut-out collage animation with stop-motion energy (9:16).", portrait: true },
+    { id: "noir-silhouettes", cat: "motion", title: "Noir Silhouettes", desc: "Graphic black, white and blue silhouettes in a rainy noir city.", portrait: false },
+    { id: "founder-story", cat: "motion", title: "Founder Story", desc: "An editorial-style explainer about the rise of a luxury empire.", portrait: false },
+    { id: "logistics-explainer", cat: "motion", title: "Logistics Explainer", desc: "Clean 2D motion graphics explaining a warehousing and shipping service.", portrait: false },
+    { id: "brand-explainer", cat: "motion", title: "Brand Explainer", desc: "Character-driven 2D animation for a business growth service.", portrait: false },
+  ];
+  const DUR = {"sea-market-ep1":"2:26","sea-market-ep2":"2:32","tiger-and-fisherman":"0:30","first-rain":"0:30","a-new-friend":"0:30","golden-hour":"0:30","first-birthday":"0:30","the-boy-emperor":"0:30","perfume-pinball":"0:15","fashion-editorial":"0:15","fruit-soda":"0:15","wok-fried-rice":"0:30","skate-collage":"0:15","noir-silhouettes":"0:15","founder-story":"0:30","logistics-explainer":"0:30","brand-explainer":"0:30"};
+  const SHOWREEL = { id: "showreel", src: "videos/showreel.mp4", title: "OpenKAI Showreel", cat: "Showreel" };
+
+  const $ = (s, r = document) => r.querySelector(s);
+  const catName = id => CATS.find(c => c.id === id).name;
+
+  // ---- render filters + groups
+  const filters = $("#filters"), groups = $("#groups");
+  const mkFilter = (id, label, n) => {
+    const b = document.createElement("button");
+    b.className = "filter" + (id === "all" ? " active" : "");
+    b.dataset.f = id;
+    b.innerHTML = `${label}<span class="n">${n}</span>`;
+    filters.appendChild(b);
+  };
+  mkFilter("all", "All", WORKS.length);
+  CATS.forEach(c => mkFilter(c.id, c.name, WORKS.filter(w => w.cat === c.id).length));
+
+  CATS.forEach((c, i) => {
+    const g = document.createElement("div");
+    g.className = "cat-group reveal"; g.dataset.cat = c.id;
+    g.innerHTML = `<div class="cat-title"><span class="idx">0${i + 1}</span><h3>${c.name}</h3><p>${c.blurb}</p></div><div class="grid"></div>`;
+    const grid = $(".grid", g);
+    WORKS.filter(w => w.cat === c.id).forEach(w => {
+      const a = document.createElement("article");
+      a.className = "card"; a.dataset.id = w.id; a.tabIndex = 0;
+      a.innerHTML = `
+        <div class="thumb${w.portrait ? " portrait" : ""}">
+          ${w.portrait ? `<div class="bg" style="background-image:url(posters/${w.id}.jpg)"></div>` : ""}
+          <img src="posters/${w.id}.jpg" alt="${w.title}" loading="lazy" />
+          <span class="play"><span class="play-ico"></span></span>
+          ${w.portrait ? `<span class="badge fmt">9:16</span>` : ""}
+          <span class="badge">${DUR[w.id]}</span>
+        </div>
+        <div class="card-meta"><h4>${w.title}</h4><p>${w.desc}</p></div>`;
+      grid.appendChild(a);
+    });
+    groups.appendChild(g);
+  });
+
+  filters.addEventListener("click", e => {
+    const b = e.target.closest(".filter"); if (!b) return;
+    filters.querySelectorAll(".filter").forEach(x => x.classList.toggle("active", x === b));
+    const f = b.dataset.f;
+    groups.querySelectorAll(".cat-group").forEach(g => {
+      g.style.display = (f === "all" || g.dataset.cat === f) ? "" : "none";
+      g.classList.add("in");
+    });
+  });
+
+  // ---- hover preview (desktop only)
+  const canHover = matchMedia("(hover: hover)").matches;
+  if (canHover) {
+    groups.addEventListener("mouseover", e => {
+      const card = e.target.closest(".card"); if (!card || card.contains(e.relatedTarget)) return;
+      const thumb = $(".thumb", card);
+      let v = $("video", thumb);
+      if (!v) {
+        v = document.createElement("video");
+        v.muted = true; v.loop = true; v.playsInline = true; v.preload = "auto";
+        v.src = `videos/${card.dataset.id}.mp4#t=1`;
+        v.addEventListener("playing", () => v.classList.add("ready"));
+        $("img", thumb).after(v);
+      }
+      v.play().catch(() => {});
+    });
+    groups.addEventListener("mouseout", e => {
+      const card = e.target.closest(".card"); if (!card || card.contains(e.relatedTarget)) return;
+      const v = $(".thumb video", card); if (v) v.pause();
+    });
+  }
+
+  // ---- lightbox
+  const lb = $("#lb"), lv = $("#lb-video");
+  let list = [], pos = 0;
+  const show = item => {
+    lv.src = item.src || `videos/${item.id}.mp4`;
+    $("#lb-title").textContent = item.title;
+    $("#lb-cat").textContent = item.cat in { drama: 1, live: 1, ads: 1, motion: 1 } ? catName(item.cat) : item.cat;
+    lv.play().catch(() => {});
+  };
+  const open = (items, i) => {
+    list = items; pos = i;
+    $("#lb-prev").style.visibility = $("#lb-next").style.visibility = items.length > 1 ? "" : "hidden";
+    lb.classList.add("open"); document.body.style.overflow = "hidden";
+    $(".hero-video").pause();
+    show(list[pos]);
+  };
+  const close = () => {
+    lb.classList.remove("open"); document.body.style.overflow = "";
+    lv.pause(); lv.removeAttribute("src"); lv.load();
+    $(".hero-video").play().catch(() => {});
+  };
+  const step = d => { pos = (pos + d + list.length) % list.length; show(list[pos]); };
+
+  const visibleWorks = () => [...groups.querySelectorAll(".cat-group")]
+    .filter(g => g.style.display !== "none")
+    .flatMap(g => [...g.querySelectorAll(".card")].map(c => WORKS.find(w => w.id === c.dataset.id)));
+  groups.addEventListener("click", e => {
+    const card = e.target.closest(".card"); if (!card) return;
+    const vis = visibleWorks();
+    open(vis, vis.findIndex(w => w.id === card.dataset.id));
+  });
+  groups.addEventListener("keydown", e => { if (e.key === "Enter" && e.target.classList.contains("card")) e.target.click(); });
+  document.querySelectorAll("[data-open=showreel]").forEach(b => b.addEventListener("click", () => open([SHOWREEL], 0)));
+  $("#lb-close").onclick = close;
+  $("#lb-prev").onclick = () => step(-1);
+  $("#lb-next").onclick = () => step(1);
+  lb.addEventListener("click", e => { if (e.target === lb) close(); });
+  document.addEventListener("keydown", e => {
+    if (!lb.classList.contains("open")) return;
+    if (e.key === "Escape") close();
+    if (e.key === "ArrowRight" && list.length > 1) step(1);
+    if (e.key === "ArrowLeft" && list.length > 1) step(-1);
+  });
+
+  // ---- misc
+  const nav = $("#nav");
+  const onScroll = () => nav.classList.toggle("scrolled", scrollY > 40);
+  addEventListener("scroll", onScroll, { passive: true }); onScroll();
+  $("#yr").textContent = new Date().getFullYear();
+  $("#stat-n").textContent = WORKS.length;
+  const fb = $("#fiverr-btn");
+  if (FIVERR_URL) fb.href = FIVERR_URL; else { fb.removeAttribute("target"); fb.href = "#contact"; }
+
+  const io = new IntersectionObserver(es => es.forEach(en => {
+    if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
+  }), { threshold: 0.08, rootMargin: "0px 0px -40px 0px" });
+  document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+</script>
+</body>
+</html>
